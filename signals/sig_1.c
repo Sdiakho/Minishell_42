@@ -1,31 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_env.c                                        :+:      :+:    :+:   */
+/*   sig_1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 09:35:21 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/25 12:43:11 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/02/25 12:20:32 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/02/25 13:15:47 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	clean_env(t_env **all_env)
-{
-	t_env	*tmp;
-
-	if (!all_env || !(*all_env))
-		return ;
-	while (*all_env)
-	{
-		tmp = *all_env;
-		*all_env = (*all_env)->next;
-		if (tmp->name)
-			free(tmp->name);
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
-	}
-}

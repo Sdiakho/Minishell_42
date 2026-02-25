@@ -6,16 +6,18 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/25 12:10:22 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/02/25 13:15:31 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdlib.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <signal.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef struct s_redir
 {
@@ -49,6 +51,9 @@ void	alloc_env(t_env **env, char *str, int sep);
 /** Env_List  **/
 t_env	*create_node(void);
 void	add_front(t_env	**head, t_env *new);
+
+/*  Clean  */
+void	clean_env(t_env **all_env);
 
 /*  Utils  */
 int		ft_strlen(const char *str);

@@ -3,6 +3,7 @@ NAME    := minishell
 CC      := cc
 CFLAGS  := -Wall -Wextra -Werror -g3
 CPPFLAGS:= -Iincludes
+LDLIBS  := -lreadline -lncurses
 
 OBJDIR  := obj
 
@@ -17,7 +18,7 @@ OBJ     := $(patsubst ./%.c,$(OBJDIR)/%.o,$(SRC))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
 
 $(OBJDIR)/%.o: ./%.c
 	@mkdir -p $(dir $@)

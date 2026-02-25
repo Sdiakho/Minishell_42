@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 13:03:17 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/25 12:06:37 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/02/25 12:43:04 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,37 +48,4 @@ void	env(t_env **all_env)
 			printf("%s=%s\n", tmp->name, tmp->value);
 		tmp = tmp->next;
 	}
-}
-
-void	clean_env(t_env **all_env)
-{
-	t_env	*tmp;
-
-	if (!all_env || !(*all_env))
-		return ;
-	while (*all_env)
-	{
-		tmp = *all_env;
-		*all_env = (*all_env)->next;
-		if (tmp->name)
-			free(tmp->name);
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
-	}
-}
-
-int	main(int ac, char **av, char **envp)
-{
-	t_env	*all_env;
-
-	all_env = NULL;
-	(void)ac;
-	(void)av;
-	if (!envp)
-		return (0);
-	fill_env(envp, &all_env);
-	env(&all_env);
-	clean_env(&all_env);
-	return (0);
 }
