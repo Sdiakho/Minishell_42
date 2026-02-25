@@ -1,45 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_1.c                                             :+:      :+:    :+:   */
+/*   env_lst_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 16:49:59 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/25 12:05:07 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/02/24 14:57:59 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/02/25 12:04:23 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_strlen(const char *str)
+t_env	*create_node(void)
 {
-	int	i;
+	t_env	*new;
 
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	new->name = NULL;
+	new->value = NULL;
+	new->next = NULL;
+	return (new);
 }
 
-char	*ft_strnndup(char *src, int start, int end)
+void	add_front(t_env	**head, t_env *new)
 {
-	int		i;
-	int		len;
-	char	*dup;
-
-	len = ft_strlen(src);
-	dup = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!dup)
-		return (NULL);
-	i = 0;
-	while (start + i < end)
-	{
-		dup[i] = src[start + i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
+	new->next = *head;
+	*head = new;
 }

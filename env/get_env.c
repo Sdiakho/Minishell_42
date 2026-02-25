@@ -6,38 +6,16 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 16:28:46 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/22 17:02:31 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/02/25 12:10:46 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-t_env	*create_node()
-{
-	t_env	*new;
-
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	return (new);
-}
-
-void	add_back(t_env **head, t_env *new)
-{
-	t_env	*tmp;
-	
-	if (!head || !(*head))
-		return (head = new);
-	tmp = *head;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-}
+#include "../includes/minishell.h"
 
 int	search_key(char *str)
 {
 	int	i;
-	
+
 	if (!str)
 		return (-1);
 	i = 0;
@@ -50,24 +28,26 @@ int	search_key(char *str)
 	return (-1);
 }
 
-void	alloc_word(t_env *env, char *str, int sep)
+void	alloc_name(t_env **env, char *str)
+{
+	char	*name;
+
+	if (!str)
+		return ;
+	name = ft_strnndup(str, 0, ft_strlen(str));
+	(*env)->name = name;
+	(*env)->value = NULL;
+}
+
+void	alloc_env(t_env **env, char *str, int sep)
 {
 	int		len;
 	char	*name;
 	char	*value;
-	
-	int i;
 
-	i = 0;
 	len = ft_strlen(str);
-	name = (char *)malloc(sizeof(char) * search_key(str));
-	if (!name)
-		return ;
-	value = (char *)malloc(sizeof(char) * (len - search_key(str) + 1));
-	if (!value)
-		return (free(name));
-	while(str[i])
-	{
-		if (i < search_key);
-	}
+	name = ft_strnndup(str, 0, sep);
+	value = ft_strnndup(str, sep + 1, len);
+	(*env)->name = name;
+	(*env)->value = value;
 }

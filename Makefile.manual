@@ -1,0 +1,43 @@
+NAME     := minishell
+
+CC       := cc
+CFLAGS   := -Wall -Wextra -Werror
+CPPFLAGS := -Iincludes
+
+OBJDIR   := obj
+
+# ==========================================================
+# Liste manuelle des fichiers sources (à mettre à jour)
+# Garde cette section propre pour suivre ton avancement.
+# ==========================================================
+SRC := \
+	built-in/env.c \
+	env/get_env.c \
+	utils/ft_1.c \
+	utils/env_lst_1.c
+
+OBJ := $(patsubst %.c,$(OBJDIR)/%.o,$(SRC))
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+
+$(OBJDIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(OBJDIR)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+# Affiche rapidement ce qui est pris en compte par ce makefile
+list:
+	@echo "Sources suivies ($(words $(SRC))):"
+	@printf " - %s\n" $(SRC)
+
+.PHONY: all clean fclean re list
