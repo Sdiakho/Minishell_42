@@ -1,32 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_lst_1.c                                        :+:      :+:    :+:   */
+/*   lexer_memory.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 14:57:59 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/26 10:33:22 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/02/26 15:48:53 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/02/26 15:50:29 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*create_node_env(void)
+t_tok	*create_node_tok(void)
 {
-	t_env	*new;
+	t_tok 	*new;
 
-	new = malloc(sizeof(t_env));
+	new = (t_tok *)malloc(sizeof(t_tok));
 	if (!new)
 		return (NULL);
-	new->name = NULL;
+	new->type = UNKNOWN;
 	new->value = NULL;
 	new->next = NULL;
 	return (new);
 }
 
-void	add_front_env(t_env	**head, t_env *new)
+void	add_back_tok(t_tok **all_tok, t_tok *new)
 {
-	new->next = *head;
-	*head = new;
+	t_tok	*tmp;
+
+	if (!(*all_tok))
+	{
+		*all_tok = new;
+		return ;	
+	}
+	tmp = *all_tok;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
+void	clean_tok(t_tok **all_tok)
+{
+	t_tok	*tmp;
+
+	if (!all_tok || !(*all_tok))
+		return ;
+	while (*all_tok)
+	{
+		tmp = *all_tok;
+		*all_tok = (*all_tok)->next;
+		if (tmp->value)
+			free(tmp->value);
+		free(tmp);
+	}
 }

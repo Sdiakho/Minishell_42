@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_lst_1.c                                        :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 14:57:59 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/26 10:33:22 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/02/26 15:47:41 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/02/26 15:51:08 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*create_node_env(void)
+int	is_sym(char c)
 {
-	t_env	*new;
+	char	*sym;
+	int		i;
 
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->name = NULL;
-	new->value = NULL;
-	new->next = NULL;
-	return (new);
+	sym = "<|>";
+	i = 0;
+	while (sym[i])
+	{
+		if (sym[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-void	add_front_env(t_env	**head, t_env *new)
+int is_space(char c)
 {
-	new->next = *head;
-	*head = new;
+	if (c == ' ' || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }

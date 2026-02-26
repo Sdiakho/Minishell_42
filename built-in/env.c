@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 13:03:17 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/25 12:43:04 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/02/26 10:34:18 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ t_env	*fill_env(char **envp, t_env **all_env)
 	i = 0;
 	while (envp[i])
 	{
-		tmp = create_node();
+		tmp = create_node_env();
 		sep = search_key(envp[i]);
 		if (sep == -1)
 			alloc_name(&tmp, envp[i]);
 		else
 			alloc_env(&tmp, envp[i], sep);
-		add_front(all_env, tmp);
+		add_front_env(all_env, tmp);
 		i++;
 	}
 	return (*all_env);
