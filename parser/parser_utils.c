@@ -1,36 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 15:47:41 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/27 09:57:03 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/02/27 12:46:59 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/02/27 12:53:04 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_sym(char c)
+void	count_arg(t_tok *all_tok)
 {
-	char	*sym;
-	int		i;
-
-	sym = "<|>";
-	i = 0;
-	while (sym[i])
-	{
-		if (sym[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	is_space(char c)
-{
-	if (c == ' ' || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
+	t_tok	*tmp;	
 }

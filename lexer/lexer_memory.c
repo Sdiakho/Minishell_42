@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:48:53 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/26 15:50:29 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/02/27 09:56:29 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_tok	*create_node_tok(void)
 {
-	t_tok 	*new;
+	t_tok	*new;
 
 	new = (t_tok *)malloc(sizeof(t_tok));
 	if (!new)
@@ -32,7 +32,7 @@ void	add_back_tok(t_tok **all_tok, t_tok *new)
 	if (!(*all_tok))
 	{
 		*all_tok = new;
-		return ;	
+		return ;
 	}
 	tmp = *all_tok;
 	while (tmp->next)
