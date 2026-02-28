@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/27 12:53:21 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/02/28 10:41:00 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef enum e_token_type
 
 typedef struct s_redir
 {
-	int				type;
+	t_token_type	type;
 	char			*file;
 	struct s_redir	*next;
 }					t_redir;
@@ -83,11 +83,16 @@ t_tok	*create_node_tok(void);
 void	add_back_tok(t_tok **all_tok, t_tok *new);
 
 /*  Parser  */
+int		cmds(t_tok **tmp, t_cmd **cmd);
 
 /*  Parser_utils  */
+int		is_redir(t_token_type type);
 int		check_syntax(t_tok *all_tok);
+int		count_arg(t_tok *tmp);
+int		count_redir(t_tok *tmp);
 
 /*  Clean  */
+void	clean_cmd(t_cmd **cmd);
 void	clean_env(t_env **all_env);
 void	clean_tok(t_tok **all_tok);
 
