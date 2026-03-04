@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/28 10:41:00 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/04 15:08:45 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,16 @@ typedef struct s_tok
 /*  Env  */
 void	env(t_env **all_env);
 int		search_key(char *str);
-void	alloc_name(t_env **env, char *str);
-t_env	*fill_env(char **envp, t_env **all_env);
-void	alloc_env(t_env **env, char *str, int sep);
+int		alloc_name(t_env **env, char *str);
+int		fill_env(char **envp, t_env **all_env);
+int		alloc_env(t_env **env, char *str, int sep);
 
 /** Env_utils  **/
 t_env	*create_node_env(void);
 void	add_front_env(t_env	**head, t_env *new);
 
 /*  Lexer  */
-void	lexer(char *line, t_tok **all_tok);
+int		lexer(char *line, t_tok **all_tok);
 int		extract_sym(char *str, int *i, t_tok *new);
 int		extract_word(char *str, int *i, t_tok *new);
 
@@ -82,14 +82,28 @@ int		is_space(char c);
 t_tok	*create_node_tok(void);
 void	add_back_tok(t_tok **all_tok, t_tok *new);
 
+/*  Expander  */
+int		expander(t_tok *all_tok, t_env *all_env);
+
+/* Expander_utils */
+int		is_alnum(char c);
+int		get_var_len(char *str);
+int		check_env_var(char *str);
+char	*expand_token(char *str);
+char	*create_swap(char *str, char *swap);
+char	*get_env_value(char *key, t_env *all_env);
+
 /*  Parser  */
-int		cmds(t_tok **tmp, t_cmd **cmd);
+int		parser(t_tok **tmp, t_cmd **cmd);
+int		fill_cmd_node(t_cmd *cmd, t_tok **all_tok);
 
 /*  Parser_utils  */
+void	init_cmd(t_cmd **cmd);
+int		count_arg(t_tok *tmp);
 int		is_redir(t_token_type type);
 int		check_syntax(t_tok *all_tok);
-int		count_arg(t_tok *tmp);
-int		count_redir(t_tok *tmp);
+void	add_back_cmd(t_cmd **head_cmd, t_cmd *new);
+void	add_back_redir(t_redir **head_redir, t_redir *new);
 
 /*  Clean  */
 void	clean_cmd(t_cmd **cmd);
@@ -98,6 +112,9 @@ void	clean_tok(t_tok **all_tok);
 
 /*  Utils  */
 int		ft_strlen(const char *str);
+int		ft_strncmp(char *s1, char *s2, int n);
+void	*ft_calloc(size_t count, size_t size);
 char	*ft_strnndup(char *src, int start, int end);
+char	*ft_strlcopy(char *dst, const char *src, int size);
 
 #endif

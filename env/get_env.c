@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 16:28:46 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/25 12:10:46 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/03 14:09:28 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,21 @@ int	search_key(char *str)
 	return (-1);
 }
 
-void	alloc_name(t_env **env, char *str)
+int	alloc_name(t_env **env, char *str)
 {
 	char	*name;
 
 	if (!str)
-		return ;
+		return (0);
 	name = ft_strnndup(str, 0, ft_strlen(str));
+	if (!name)
+		return (0);
 	(*env)->name = name;
 	(*env)->value = NULL;
+	return (1);
 }
 
-void	alloc_env(t_env **env, char *str, int sep)
+int	alloc_env(t_env **env, char *str, int sep)
 {
 	int		len;
 	char	*name;
@@ -47,7 +50,12 @@ void	alloc_env(t_env **env, char *str, int sep)
 
 	len = ft_strlen(str);
 	name = ft_strnndup(str, 0, sep);
+	if (!name)
+		return (0);
 	value = ft_strnndup(str, sep + 1, len);
+	if (!value)
+		return (free(name), 0);
 	(*env)->name = name;
 	(*env)->value = value;
+	return (1);
 }

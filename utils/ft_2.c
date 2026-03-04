@@ -1,32 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_env.c                                        :+:      :+:    :+:   */
+/*   ft_2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 09:35:21 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/03 12:58:42 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/03/04 13:10:44 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/03/04 13:17:41 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	clean_env(t_env **all_env)
+void	ft_bzero(void *s, size_t n)
 {
-	t_env	*tmp;
+	size_t	i;
+	char	*ptr;
 
-	if (!all_env || !(*all_env))
-		return ;
-	while (*all_env)
+	ptr = (char *)s;
+	i = 0;
+	while (i < n)
 	{
-		tmp = *all_env;
-		*all_env = (*all_env)->next;
-		if (tmp->name)
-			free(tmp->name);
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
+		ptr[i] = '\0';
+		i++;
 	}
-	*all_env = NULL;
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	size_t	total_size;
+	char	*new_ptr;
+
+	total_size = count * size;
+	if (total_size == 0)
+		return (NULL);
+	new_ptr = (char *)malloc(total_size);
+	if (!new_ptr)
+		return (NULL);
+	ft_bzero(new_ptr, total_size);
+	return (new_ptr);
 }

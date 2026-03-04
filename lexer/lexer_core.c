@@ -6,13 +6,13 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:21:09 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/27 10:02:37 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/03 13:24:48 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	lexer(char *line, t_tok **all_tok)
+int	lexer(char *line, t_tok **all_tok)
 {
 	int		i;
 	t_tok	*new;
@@ -26,15 +26,16 @@ void	lexer(char *line, t_tok **all_tok)
 			break ;
 		new = create_node_tok();
 		if (!new)
-			return (clean_tok(all_tok));
+			return (clean_tok(all_tok), 0);
 		if (is_sym(line[i]))
 		{
 			if (!extract_sym(line, &i, new))
-				return (clean_tok(all_tok));
+				return (clean_tok(all_tok), free(new), 0);
 		}
 		else
 			if (!extract_word(line, &i, new))
-				return (clean_tok(all_tok));
+				return (clean_tok(all_tok), free(new), 0);
 		add_back_tok(all_tok, new);
 	}
+	return (1);
 }

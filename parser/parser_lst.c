@@ -1,58 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_memory.c                                     :+:      :+:    :+:   */
+/*   parser_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 15:48:53 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/03 12:56:08 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/03/04 12:22:30 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/03/04 14:52:23 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_tok	*create_node_tok(void)
+void	init_cmd(t_cmd **cmd)
 {
-	t_tok	*new;
-
-	new = (t_tok *)malloc(sizeof(t_tok));
-	if (!new)
-		return (NULL);
-	new->type = UNKNOWN;
-	new->value = NULL;
-	new->next = NULL;
-	return (new);
+	(*cmd)->cmd_param = NULL;
+	(*cmd)->redirs = NULL;
+	(*cmd)->next = NULL;
+	(*cmd)->fd_in = -1;
+	(*cmd)->fd_out = -1;
 }
 
-void	add_back_tok(t_tok **all_tok, t_tok *new)
+void	add_back_redir(t_redir **head_redir, t_redir *new)
 {
-	t_tok	*tmp;
+	t_redir	*tmp;
 
-	if (!(*all_tok))
+	if (!head_redir)
+		return ;
+	if (!(*head_redir))
 	{
-		*all_tok = new;
+		*head_redir = new;
 		return ;
 	}
-	tmp = *all_tok;
+	tmp = *head_redir;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
 }
 
-void	clean_tok(t_tok **all_tok)
+void	add_back_cmd(t_cmd **head_cmd, t_cmd *new)
 {
-	t_tok	*tmp;
+	t_cmd	*tmp;
 
-	if (!all_tok || !(*all_tok))
+	if (!head_cmd)
 		return ;
-	while (*all_tok)
+	if (!(*head_cmd))
 	{
-		tmp = *all_tok;
-		*all_tok = (*all_tok)->next;
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
+		*head_cmd = new;
+		return ;
 	}
-	*all_tok = NULL;
+	tmp = *head_cmd;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }

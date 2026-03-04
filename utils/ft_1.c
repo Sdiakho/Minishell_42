@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 16:49:59 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/28 09:23:38 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/04 14:50:09 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ int	ft_strlen(const char *str)
 char	*ft_strnndup(char *src, int start, int end)
 {
 	int		i;
-	int		len;
 	char	*dup;
 
-	len = ft_strlen(src);
 	dup = (char *)malloc(sizeof(char) * (end - start + 1));
 	if (!dup)
 		return (NULL);
@@ -42,4 +40,30 @@ char	*ft_strnndup(char *src, int start, int end)
 	}
 	dup[i] = '\0';
 	return (dup);
+}
+
+int	ft_strncmp(char *s1, char *s2, int n)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+char	*ft_strlcopy(char *dst, const char *src, int size)
+{
+	int	i;
+
+	i = 0;
+	if (!dst || !src || size <= 0)
+		return (NULL);
+	while (src[i] && i < size - 1)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }

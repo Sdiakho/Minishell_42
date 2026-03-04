@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_env.c                                        :+:      :+:    :+:   */
+/*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 09:35:21 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/03 12:58:42 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/03/03 15:11:47 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/03/03 15:28:50 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	clean_env(t_env **all_env)
+int	is_alnum(char c)
 {
-	t_env	*tmp;
-
-	if (!all_env || !(*all_env))
-		return ;
-	while (*all_env)
-	{
-		tmp = *all_env;
-		*all_env = (*all_env)->next;
-		if (tmp->name)
-			free(tmp->name);
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
-	}
-	*all_env = NULL;
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }
