@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/04 15:08:45 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/10 13:41:07 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <fcntl.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <readline/history.h>
@@ -41,8 +43,7 @@ typedef struct s_cmd
 {
 	char			**cmd_param;
 	t_redir			*redirs;
-	int				fd_in;
-	int				fd_out;
+	pid_t			pid;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -61,8 +62,8 @@ typedef struct s_tok
 }					t_tok;
 
 /*  Env  */
-void	env(t_env **all_env);
 int		search_key(char *str);
+int		ft_env(t_env **all_env);
 int		alloc_name(t_env **env, char *str);
 int		fill_env(char **envp, t_env **all_env);
 int		alloc_env(t_env **env, char *str, int sep);
@@ -105,15 +106,30 @@ int		check_syntax(t_tok *all_tok);
 void	add_back_cmd(t_cmd **head_cmd, t_cmd *new);
 void	add_back_redir(t_redir **head_redir, t_redir *new);
 
+/*  Executor  */
+int	executor(t_cmd *all_cmd, t_env **all_env, int *status);
+
+/*  Executor_utils  */
+char	*path(t_cmd *cmd, t_env *all_env, int *status);
+
 /*  Clean  */
 void	clean_cmd(t_cmd **cmd);
 void	clean_env(t_env **all_env);
 void	clean_tok(t_tok **all_tok);
 
+/*  Error  */
+void	error_exit_msg(char *msg, int status);
+
 /*  Utils  */
+void	free_split(char **words);
 int		ft_strlen(const char *str);
+int		ft_strchr(char *str, char c);
+void	ft_putstr_fd(char *s, int fd);
+int		ft_strschr(char *str, char *chr);
+char	**ft_split(char *str, char *sep);
 int		ft_strncmp(char *s1, char *s2, int n);
 void	*ft_calloc(size_t count, size_t size);
+char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strnndup(char *src, int start, int end);
 char	*ft_strlcopy(char *dst, const char *src, int size);
 

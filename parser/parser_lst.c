@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 12:22:30 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/04 14:52:23 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/10 13:54:10 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void	init_cmd(t_cmd **cmd)
 	(*cmd)->cmd_param = NULL;
 	(*cmd)->redirs = NULL;
 	(*cmd)->next = NULL;
-	(*cmd)->fd_in = -1;
-	(*cmd)->fd_out = -1;
+	(*cmd)->pid = -1;
 }
 
 void	add_back_redir(t_redir **head_redir, t_redir *new)

@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 13:03:17 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/03 14:08:47 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/07 17:46:39 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int	fill_env(char **envp, t_env **all_env)
 	return (1);
 }
 
-void	env(t_env **all_env)
+int	ft_env(t_env **all_env)
 {
 	t_env	*tmp;
 
 	if (!all_env)
-		return ;
+		return (0);
 	tmp = *all_env;
 	while (tmp)
 	{
@@ -54,4 +54,5 @@ void	env(t_env **all_env)
 			printf("%s=%s\n", tmp->name, tmp->value);
 		tmp = tmp->next;
 	}
+	return (1);
 }
