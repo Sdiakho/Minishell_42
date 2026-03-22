@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   clean_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/09 16:35:31 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:16:41 by sdiakho          ###   ########.fr       */
+/*   Created: 2026/03/16 15:36:31 by sdiakho           #+#    #+#             */
+/*   Updated: 2026/03/16 19:34:42 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	error_exit_sys(char *msg, int status)
+void	clean_loop(char **line, t_minishell *mini)
 {
-	if (msg)
-		perror(msg);
-	exit(status);
+	if (line)
+		if (*line)
+			free(*line);
+	if (mini->all_cmd)
+		clean_cmd(&(mini->all_cmd));
+	if (mini->all_tok)
+		clean_tok(&(mini->all_tok));
+	*line = NULL;
+	mini->all_cmd = NULL;
+	mini->all_tok = NULL;
 }
 
-void	error_exit_msg(char *msg, int status)
+void	clean_shell(char **line, t_minishell *mini)
 {
-	if (msg)
-	{
-		ft_putstr_fd(msg, 2);
-		ft_putstr_fd("\n", 2);
-	}
-	exit(status);
+	clean_loop(line, mini);
+	if (mini->all_env)
+		clean_env(&(mini->all_env));
+	clear_history();
 }

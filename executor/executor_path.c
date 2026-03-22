@@ -6,13 +6,13 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 15:16:58 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/10 13:35:09 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/21 18:07:38 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int is_abs_path(char *path)
+int	is_abs_path(char *path)
 {
 	if (!path)
 		return (0);
@@ -37,7 +37,7 @@ char	**get_env_path(t_env *all_env)
 
 	if (!all_env)
 		return (NULL);
-	paths = get_env_value("PATH", all_env);
+	paths = get_env_value(ft_strnndup("PATH", 0, 4), all_env);
 	if (!paths)
 		return (NULL);
 	sep_paths = ft_split(paths, ":");
@@ -53,7 +53,7 @@ char	*get_cmd_path(t_cmd *cmd, char **paths, int *status)
 	char	*temp;
 	char	*full;
 
-	if (!cmd)
+	if (!cmd || !paths)
 		return (NULL);
 	i = 0;
 	while (paths[i])
@@ -70,28 +70,30 @@ char	*get_cmd_path(t_cmd *cmd, char **paths, int *status)
 		free(full);
 		i++;
 	}
-	return(NULL);
+	return (NULL);
 }
 
 char	*path(t_cmd *cmd, t_env *all_env, int *status)
 {
 	char	**env;
 	char	*full_path;
-	
-	if (!cmd || !all_env)
+
+	if (!cmd)
 		return (NULL);
 	*status = 127;
 	if (is_abs_path(cmd->cmd_param[0]))
 	{
 		if (test_path(cmd->cmd_param[0], status))
-			return (ft_strnndup(cmd->cmd_param[0], 0, ft_strlen(cmd->cmd_param[0])));
+			return (ft_strnndup(cmd->cmd_param[0], 0,
+					ft_strlen(cmd->cmd_param[0])));
 		return (NULL);
 	}
 	else
 	{
 		env = get_env_path(all_env);
 		full_path = get_cmd_path(cmd, env, status);
-		free_split(env);
-		return (full_path);	
+		if (env)
+			free_split(env);
+		return (full_path);
 	}
 }

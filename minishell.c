@@ -6,87 +6,94 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 12:15:15 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/10 13:29:05 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/21 19:05:28 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/minishell.h"
+#include "minishell.h"
 
-// int	main(int ac, char **av, char **envp)
-// {
-// 	int		i;
-// 	t_env	*all_env;
-// 	t_tok	*all_tok;
-// 	t_cmd	*all_cmd;
-// 	t_tok	*tmp;
-// 	t_cmd	*tmp2;
-// 	t_env	*env_test;
-// 	char	*line;
+int	g_status = 0;
 
-// 	if (ac != 1)
-// 		return (0);
-// 	(void)av;
-// 	all_env = NULL;
-// 	all_tok = NULL;
-// 	all_cmd = NULL;
-// 	if (!envp)
-// 		return (1);
-// 	if (!fill_env(envp, &all_env))
-// 		printf("Attention il n'y a pas de variable d'environnement");
-// 	env_test = malloc(sizeof(t_env));
-// 	env_test->name = ft_strnndup("TEST", 0, 5);
-// 	env_test->value = ft_strnndup("sdiakho", 0, 8);
-// 	add_front_env(&all_env, env_test);
-// 	// while (all_env)
-// 	// {
-// 	// 	printf("%s\n", all_env->name);
-// 	// 	all_env = all_env->next;
-// 	// }
-// 	signal(SIGQUIT, SIG_IGN);
-// 	while (1)
-// 	{
-// 		line = readline("minishell>");
-// 		if (!line)
-// 			break ;
-// 		if (line[0] != '\0')
-// 			add_history(line);
-// 		lexer(line, &all_tok);
-// 		tmp = all_tok;
-// 		while (tmp)
-// 		{
-// 			printf("Type: %d | Value: [%s]\n", tmp->type, tmp->value);
-// 			tmp = tmp->next;
-// 		}
-// 		printf("La taille du double tableau d'args sera de %d\n", count_arg(all_tok));
-// 		expander(all_tok, all_env);
-// 		tmp = all_tok;
-// 		while (tmp)
-// 		{
-// 			printf("Type: %d | Value: [%s]\n", tmp->type, tmp->value);
-// 			tmp = tmp->next;
-// 		}
-// 		parser(&all_tok, &all_cmd);
-// 		tmp2 = all_cmd;
-// 		while (tmp2)
-// 		{
-// 			i = 0;
-// 			while (tmp2->cmd_param[i])
-// 			{
-// 				printf("%s\n", tmp2->cmd_param[i]);
-// 				i++;	
-// 			}
-// 			while (tmp2->redirs)
-// 			{
-// 				printf("avec la redirection %d vers %s\n", tmp2->redirs->type, tmp2->redirs->file);
-// 				tmp2->redirs = tmp2->redirs->next;
-// 			}
-// 			tmp2 = tmp2->next;
-// 		}
-// 		free(line);
-// 		clean_tok(&all_tok);
-// 		clean_cmd(&all_cmd);
-// 	}
-// 	clear_history();
-// 	clean_env(&all_env);
-// 	return (0);
-// }
+t_minishell	*init_shell(char **envp, struct sigaction *sa)
+{
+	t_minishell	*mini;
+
+	mini = (t_minishell *)malloc(sizeof(t_minishell));
+	if (!mini)
+		return (NULL);
+	mini->all_env = NULL;
+	mini->all_cmd = NULL;
+	mini->all_tok = NULL;
+	mini->exit_status = 0;
+	fill_env(envp, &(mini->all_env));
+	*sa = sig_init(sig_handler);
+	return (mini);
+}
+
+char	*process_line(t_minishell *mini)
+{
+	char	*line;
+
+	line = readline("minishell> ");
+	if (g_status != 0)
+		mini->exit_status = g_status;
+	if (!line)
+		return (NULL);
+	if (line[0] != '\0' && !ft_strschr(line, "<<"))
+		add_history(line);
+	return (line);
+}
+
+int	build_ast_from_line(char *line, t_minishell *mini)
+{
+	if (!lexer(line, &(mini->all_tok)))
+		return (0);
+	if (!expander(mini->all_tok, mini->all_env, &(mini->exit_status)))
+		return (0);
+	if (!parser(&(mini->all_tok), &(mini->all_cmd)))
+		return (0);
+	if (!here_docs(mini))
+		return (0);
+	return (1);
+}
+
+int	launch_execution(t_minishell *mini)
+{
+	if (mini->all_cmd)
+	{
+		sig_ign();
+		if (!executor(mini))
+			return (0);
+		return (1);
+	}
+	return (1);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_minishell			*mini;
+	char				*line;
+	struct sigaction	sa;
+
+	(void)argv;
+	(void)argc;
+	mini = init_shell(envp, &sa);
+	if (!mini)
+		return (1);
+	while (1)
+	{
+		sig_main(sa);
+		g_status = 0;
+		line = process_line(mini);
+		if (!line)
+			break ;
+		if (!build_ast_from_line(line, mini))
+		{
+			clean_loop(&line, mini);
+			continue ;
+		}
+		launch_execution(mini);
+		clean_loop(&line, mini);
+	}
+	return (clean_shell(&line, mini), 0);
+}

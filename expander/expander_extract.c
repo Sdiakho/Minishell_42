@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 15:22:24 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/03 15:28:39 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/14 13:59:43 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ char	*expand_token(char *str)
 		len_var = get_var_len(str + pos_dl + 1);
 		if (len_var == -1 || len_var == 0)
 			return (NULL);
+		if (len_var == 1)
+		{
+			if (str[pos_dl + 1] == '?')
+				return ("?");
+		}
 		exp_var = ft_strnndup(str + pos_dl + 1, 0, len_var);
 		if (!exp_var)
 			return (NULL);

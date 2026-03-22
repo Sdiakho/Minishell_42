@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 12:24:12 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/04 15:00:44 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/13 17:23:27 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ void	clean_cmd_redirs(t_cmd **cmd)
 	while ((*cmd)->redirs)
 	{
 		tmp = (*cmd)->redirs;
+		(*cmd)->redirs = (*cmd)->redirs->next;
+		if (tmp->type == H_DOC)
+			unlink(tmp->file);
 		free(tmp->file);
 		free(tmp);
-		(*cmd)->redirs = (*cmd)->redirs->next;
 	}
 }
 
@@ -50,13 +52,11 @@ void	clean_cmd(t_cmd **cmd)
 	while ((*cmd))
 	{
 		tmp = (*cmd);
+		*cmd = (*cmd)->next;
 		if (tmp->cmd_param)
 			clean_cmd_params(&tmp);
 		if (tmp->redirs)
 			clean_cmd_redirs(&tmp);
 		free(tmp);
-		if (!(*cmd))
-			break ;
-		*cmd = (*cmd)->next;
 	}
 }

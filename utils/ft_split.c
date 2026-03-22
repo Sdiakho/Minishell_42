@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 15:27:45 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/07 15:34:11 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/17 21:16:49 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	free_split(char **words)
 {
-	char	**tmp2;
+	int	i;
 
+	i = 0;
 	if (!words)
 		return ;
-	tmp2 = words;
-	while (*tmp2)
+	while (words[i] != NULL)
 	{
-		free(*tmp2);
-		tmp2++;
+		free(words[i]);
+		i++;
 	}
 	free(words);
 }

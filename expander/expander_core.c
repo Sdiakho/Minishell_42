@@ -6,13 +6,13 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 10:42:23 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/04 15:03:47 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/17 21:57:27 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	process_one(t_tok *old, t_env *all_env)
+static int	process_one(t_tok *old, t_env *all_env, int *exit_status)
 {
 	char	*env_var;
 	char	*swap;
@@ -23,7 +23,10 @@ static int	process_one(t_tok *old, t_env *all_env)
 		env_var = expand_token(old->value);
 		if (!env_var)
 			return (0);
-		swap = get_env_value(env_var, all_env);
+		if (env_var[0] == '?' && env_var[1] == '\0')
+			swap = ft_itoa(*exit_status);
+		else
+			swap = get_env_value(env_var, all_env);
 		if (!swap)
 			return (0);
 		full = create_swap(old->value, swap);
@@ -36,7 +39,7 @@ static int	process_one(t_tok *old, t_env *all_env)
 	return (1);
 }
 
-int	expander(t_tok *all_tok, t_env *all_env)
+int	expander(t_tok *all_tok, t_env *all_env, int *exit_status)
 {
 	t_tok	*temp;
 
@@ -47,7 +50,7 @@ int	expander(t_tok *all_tok, t_env *all_env)
 	{
 		if (temp->type == WORD)
 		{
-			if (!process_one(temp, all_env))
+			if (!process_one(temp, all_env, exit_status))
 				return (clean_env(&all_env), clean_tok(&all_tok), 0);
 		}
 		temp = temp->next;

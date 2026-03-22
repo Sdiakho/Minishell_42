@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 13:12:53 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/10 13:28:15 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/21 18:17:54 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_strschr(char *str, char *chr)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	while (str[i])
@@ -25,7 +25,7 @@ int	ft_strschr(char *str, char *chr)
 		{
 			if (str[i + j] == chr[j])
 				j++;
-			else 
+			else
 				break ;
 		}
 		if (j == ft_strlen(chr))
@@ -33,4 +33,45 @@ int	ft_strschr(char *str, char *chr)
 		i++;
 	}
 	return (0);
+}
+
+char	*process_0(void)
+{
+	char	*zero;
+
+	zero = (char *)malloc(2);
+	if (!zero)
+		return (NULL);
+	zero[0] = '0';
+	zero[1] = '\0';
+	return (zero);
+}
+
+char	*ft_itoa(int nb)
+{
+	char	*nbr;
+	int		len;
+	long	nb_l;
+
+	if (nb == 0)
+		return (process_0());
+	nb_l = nb;
+	len = 0;
+	while (nb_l != 0)
+	{
+		len++;
+		nb_l /= 10;
+	}
+	nbr = (char *)malloc(sizeof(char) * (len + 1));
+	if (!nbr)
+		return (NULL);
+	nbr[len] = '\0';
+	len--;
+	while (nb != 0)
+	{
+		nbr[len] = (nb % 10) + '0';
+		len--;
+		nb /= 10;
+	}
+	return (nbr);
 }

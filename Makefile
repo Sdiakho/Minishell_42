@@ -1,9 +1,15 @@
 NAME    := minishell
 
 CC      := cc
-CFLAGS  := -Wall -Wextra -Werror -g3
-CPPFLAGS:= -Iincludes
+CFLAGS  := -Wall -Wextra -Werror -g3 -fsanitize=address
 LDLIBS  := -lreadline -lncurses
+
+ifeq ($(shell uname -s),Darwin)
+  INCLUDES := -Iincludes -I/opt/homebrew/opt/readline/include
+  LDFLAGS := -L/opt/homebrew/opt/readline/lib
+else
+  INCLUDES := -Iincludes
+endif
 
 OBJDIR  := obj
 
@@ -18,11 +24,11 @@ OBJ     := $(patsubst ./%.c,$(OBJDIR)/%.o,$(SRC))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ) $(LDFLAGS) $(LDLIBS) -o $(NAME)
 
 $(OBJDIR)/%.o: ./%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)

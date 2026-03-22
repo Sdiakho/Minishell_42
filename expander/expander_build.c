@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 15:25:53 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/03 15:26:59 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/10 18:50:01 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*create_swap(char *str, char *swap)
 	ft_strlcopy(&temp[pos_dl], swap, ft_strlen(swap) + 1);
 	full_join = (char *)malloc((ft_strlen(temp) + len_str - pos_dl - len_var));
 	if (!full_join)
-		return (NULL);
+		return (free(temp), NULL);
 	ft_strlcopy(full_join, temp, ft_strlen(temp) + 1);
 	ft_strlcopy(full_join + ft_strlen(temp), str + pos_dl + len_var + 1,
 		len_str - pos_dl - len_var + 1);
