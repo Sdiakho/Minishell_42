@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 16:43:15 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:10:22 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/22 23:23:06 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	process_cmd(t_minishell *mini)
 {
 	if (is_builtin(mini->all_cmd->cmd_param[0]) && !mini->all_cmd->next)
 	{
-		if (!only_one_blt(mini->all_cmd, &(mini->all_env)))
+		if (!only_one_blt(mini))
 			return (0);
 		return (1);
 	}

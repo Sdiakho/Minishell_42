@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:49:23 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/23 14:05:10 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ typedef struct s_minishell
 
 /*  Env  */
 int		search_key(char *str);
-int		ft_env(t_env **all_env);
 int		alloc_name(t_env **env, char *str);
 int		fill_env(char **envp, t_env **all_env);
 int		alloc_env(t_env **env, char *str, int sep);
@@ -129,9 +128,9 @@ int		process_loop(t_cmd *tmp, int pip[2], int *prev_pip, t_minishell *mini);
 int		is_builtin(char *cmd);
 int		do_in_redir(t_cmd *cmd);
 int		do_out_redir(t_cmd *cmd);
+int		only_one_blt(t_minishell *mini);
 int		process_just_redir(t_cmd *all_cmd);
 int		exec_builtin(t_cmd *cmd, t_env **env);
-int		only_one_blt(t_cmd *cmd, t_env **all_env);
 char	*path(t_cmd *cmd, t_env *all_env, int *status);
 
 /*  Signal  */
@@ -140,6 +139,11 @@ void	sig_ign(void);
 void	sig_handler(int sig);
 void	sig_main(struct sigaction sa);
 t_sig	sig_init(void (*handler)(int));
+
+/*  Built-ins  */
+int		ft_pwd(void);
+int		ft_echo(t_cmd *cmd);
+int		ft_env(t_env **all_env);
 
 /*  Clean  */
 void	clean_cmd(t_cmd **cmd);

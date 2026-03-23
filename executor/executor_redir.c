@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:33:54 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:04:59 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/22 23:22:38 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,24 @@ int	reset_save(int save_stdin, int save_stdout)
 	return (1);
 }
 
-int	only_one_blt(t_cmd *cmd, t_env **all_env)
+int	only_one_blt(t_minishell *mini)
 {
 	int		save_stdin;
 	int		save_stdout;
 
 	save_stdin = dup(STDIN_FILENO);
 	save_stdout = dup(STDOUT_FILENO);
-	if (!do_in_redir(cmd))
+	if (!do_in_redir(mini->all_cmd))
 	{
 		reset_save(save_stdin, save_stdout);
 		return (0);
 	}
-	if (!do_out_redir(cmd))
+	if (!do_out_redir(mini->all_cmd))
 	{
 		reset_save(save_stdin, save_stdout);
 		return (0);
 	}
-	exec_builtin(cmd, all_env);
+	mini->exit_status = exec_builtin(mini->all_cmd, &(mini->all_env));
 	if (!reset_save(save_stdin, save_stdout))
 		return (0);
 	return (1);

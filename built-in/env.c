@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 13:03:17 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/07 17:46:39 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/22 23:24:26 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_env(t_env **all_env)
 	t_env	*tmp;
 
 	if (!all_env)
-		return (0);
+		return (1);
 	tmp = *all_env;
 	while (tmp)
 	{
@@ -54,5 +54,5 @@ int	ft_env(t_env **all_env)
 			printf("%s=%s\n", tmp->name, tmp->value);
 		tmp = tmp->next;
 	}
-	return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:36:59 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 19:31:50 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/23 00:29:08 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	exec_builtin(t_cmd *cmd, t_env **env)
 {
 	// if (!ft_strncmp(cmd->cmd_param[0], "cd", 3))
 	// 	return (ft_cd(cmd, env));
-	// if (!ft_strncmp(cmd->cmd_param[0], "echo", 5))
-	// 	return (ft_echo(cmd));
-	// if (!ft_strncmp(cmd->cmd_param[0], "pwd", 4))
-	// 	return (ft_pwd(cmd));
+	if (!ft_strncmp(cmd->cmd_param[0], "echo", 5))
+		return (ft_echo(cmd));
+	if (!ft_strncmp(cmd->cmd_param[0], "pwd", 4))
+	 	return (ft_pwd());
 	// if (!ft_strncmp(cmd->cmd_param[0], "export", 7))
 	// 	return (ft_export(cmd, env));
 	// if (!ft_strncmp(cmd->cmd_param[0], "unset", 6))
@@ -48,6 +48,6 @@ int	exec_builtin(t_cmd *cmd, t_env **env)
 	// if (!ft_strncmp(cmd->cmd_param[0], "exit", 5))
 	// 	return (ft_exit(cmd, env));
 	if (cmd && *env)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
