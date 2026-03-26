@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/23 14:05:10 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/26 18:14:38 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,14 @@ t_sig	sig_init(void (*handler)(int));
 /*  Built-ins  */
 int		ft_pwd(void);
 int		ft_echo(t_cmd *cmd);
+int		check_var(char *var);
 int		ft_env(t_env **all_env);
+int		ft_unset(t_cmd *cmd, t_env **all_env);
+int		ft_export(t_cmd *cmd, t_env **all_env);
+/** Export **/
+void	*print_env(t_env *all_env);
+int		process_node(t_env *tmp, t_env *new, int pos_egal);
+t_env	*build_node(int *i, t_cmd *cmd, int *pos_egal, t_env **all_env);
 
 /*  Clean  */
 void	clean_cmd(t_cmd **cmd);

@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 15:16:58 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:07:38 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/26 18:35:48 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_abs_path(char *path)
 {
 	if (!path)
 		return (0);
-	if (ft_strchr(path, '/'))
+	if (ft_strchr(path, '/') != -1)
 		return (1);
 	return (0);
 }

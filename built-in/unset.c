@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 14:52:05 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/23 20:57:39 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/26 18:16:53 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	free_node(t_env *node)
 	free(node);
 }
 
-void	process_node(char *cmd, t_env **all_env)
+static	void	process_nod(char *cmd, t_env **all_env)
 {
 	t_env	*current;
 	t_env	*prev;
@@ -85,7 +85,7 @@ int	ft_unset(t_cmd *cmd, t_env **all_env)
 			i++;
 			continue ;
 		}
-		process_node(cmd->cmd_param[i], all_env);
+		process_nod(cmd->cmd_param[i], all_env);
 		i++;
 	}
 	return (flag);

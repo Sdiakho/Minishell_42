@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 13:10:44 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/09 16:36:23 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/26 18:35:05 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ int	ft_strchr(char *str, char c)
 	while (str[i])
 	{
 		if (str[i] == c)
-			return (1);
+			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 char	*ft_strjoin(const char *s1, const char *s2)
