@@ -6,13 +6,13 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 16:43:15 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/30 21:27:23 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 21:51:45 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	loop_wait(t_cmd *all_cmd, int *final_status)
+void	loop_wait(t_cmd *all_cmd, int *f_status)
 {
 	t_cmd	*tmp;
 	int		status;
@@ -26,16 +26,16 @@ void	loop_wait(t_cmd *all_cmd, int *final_status)
 		{
 			waitpid(tmp->pid, &status, 0);
 			if (WIFEXITED(status))
-				*final_status = WEXITSTATUS(status);
+				*f_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				*final_status = 128 + WTERMSIG(status);
-				if (is_printed == 0)
+				*f_status = 128 + WTERMSIG(status);
+				if (is_printed == 0 && (*f_status == 130 || *f_status == 131))
 					write(1, "\n", 1);
 				is_printed++;
 			}
 			else
-				*final_status = 1;
+				*f_status = 1;
 		}
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/30 21:30:01 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 22:14:50 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <signal.h>
 # include <string.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
