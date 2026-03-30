@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:38:01 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:14:32 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 21:18:32 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	**env_list_to_array(t_env *all_env)
 	return (cur_envp);
 }
 
-void	exec_extern(t_cmd *cmd, t_env **all_env)
+void	exec_extern(t_cmd *cmd, t_env **all_env, t_minishell *mini)
 {
 	char	*full;
 	char	**cur_env;
@@ -79,27 +79,30 @@ void	exec_extern(t_cmd *cmd, t_env **all_env)
 
 	cur_env = env_list_to_array(*all_env);
 	if (!cur_env)
-		error_exit_msg("Split error", 1);
+		error_exit_msg("minishell: split error", 1, mini);
+	verif_point(cmd, mini, cur_env);
 	full = path(cmd, *all_env, &status);
 	if (!full)
 	{
 		free_split(cur_env);
 		ft_putstr_fd(cmd->cmd_param[0], 2);
 		if (status == 127)
-			error_exit_msg(": Command not found", status);
+			error_exit_msg("minishell: command not found", status, mini);
 		else if (status == 126)
-			error_exit_msg(": Permission denied", status);
+			error_exit_msg("minishell: permission denied", status, mini);
 	}
+	verif_dir(full, mini, cur_env);
 	execve(full, cmd->cmd_param, cur_env);
 	free_split(cur_env);
-	error_exit_msg("Execve error", 126);
+	free(full);
+	error_exit_msg("minishell: Execve error", 126, mini);
 }
 
-void	exec_cmd(t_cmd *cmd, t_env **all_env, int *status)
+void	exec_cmd(t_cmd *cmd, t_env **all_env, int *status, t_minishell *mini)
 {
 	sig_dfl();
 	if (is_builtin(cmd->cmd_param[0]))
-		*status = exec_builtin(cmd, all_env);
+		*status = exec_builtin(cmd, all_env, mini);
 	else
-		exec_extern(cmd, all_env);
+		exec_extern(cmd, all_env, mini);
 }

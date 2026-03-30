@@ -6,13 +6,13 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 12:15:15 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/26 18:15:01 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 20:00:08 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_status = 0;
+volatile sig_atomic_t	g_status = 0;
 
 t_minishell	*init_shell(char **envp, struct sigaction *sa)
 {
@@ -26,6 +26,7 @@ t_minishell	*init_shell(char **envp, struct sigaction *sa)
 	mini->all_tok = NULL;
 	mini->exit_status = 0;
 	fill_env(envp, &(mini->all_env));
+	init_shlvl(&(mini->all_env));
 	*sa = sig_init(sig_handler);
 	return (mini);
 }
@@ -46,6 +47,11 @@ char	*process_line(t_minishell *mini)
 
 int	build_ast_from_line(char *line, t_minishell *mini)
 {
+	if (!check_unclosed_quotes(line))
+	{
+		printf("minishell: unclosed quotes\n");
+		return (0);
+	}
 	if (!lexer(line, &(mini->all_tok)))
 		return (0);
 	if (!expander(mini->all_tok, mini->all_env, &(mini->exit_status)))

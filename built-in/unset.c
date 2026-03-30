@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 14:52:05 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/26 18:16:53 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 19:03:01 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	check_var(char *var)
 	int	i;
 
 	i = 0;
+	if (var[0] == '\0')
+		return (0);
 	if (var[0] >= '0' && var[0] <= '9')
 		return (0);
 	while (var[i])

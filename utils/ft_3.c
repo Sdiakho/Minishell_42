@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 13:12:53 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:17:54 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/28 14:21:28 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,9 @@ char	*ft_itoa(int nb)
 		nb /= 10;
 	}
 	return (nbr);
+}
+
+int	is_digit(char c)
+{
+	return (c >= '0' && c <= '9');
 }

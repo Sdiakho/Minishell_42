@@ -6,18 +6,23 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/26 18:14:38 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 21:30:01 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define LONG_MAX 9223372036854775807ULL
+# define LONG_MIN 9223372036854775808ULL
+# include <errno.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <string.h>
+# include <sys/stat.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
@@ -74,9 +79,10 @@ typedef struct s_minishell
 
 /*  Env  */
 int		search_key(char *str);
-int		alloc_name(t_env **env, char *str);
+int		init_shlvl(t_env **all_env);
+int		alloc_name(t_env *env, char *str);
 int		fill_env(char **envp, t_env **all_env);
-int		alloc_env(t_env **env, char *str, int sep);
+int		alloc_env(t_env *env, char *str, int sep);
 
 /** Env_utils  **/
 t_env	*create_node_env(void);
@@ -91,6 +97,7 @@ int		extract_word(char *str, int *i, t_tok *new);
 int		is_sym(char c);
 int		is_space(char c);
 t_tok	*create_node_tok(void);
+int		check_unclosed_quotes(char *line);
 void	add_back_tok(t_tok **all_tok, t_tok *new);
 
 /*  Expander  */
@@ -105,9 +112,10 @@ char	*create_swap(char *str, char *swap);
 char	*get_env_value(char *key, t_env *all_env);
 
 /*  Parser  */
+int		purify_cmd(t_cmd *all_cmd);
+int		here_docs(t_minishell *mini);
 int		parser(t_tok **tmp, t_cmd **cmd);
 int		fill_cmd_node(t_cmd *cmd, t_tok **all_tok);
-int		here_docs(t_minishell *mini);
 
 /*  Parser_utils  */
 void	init_cmd(t_cmd **cmd);
@@ -121,7 +129,7 @@ void	add_back_redir(t_redir **head_redir, t_redir *new);
 
 /*  Executor  */
 int		executor(t_minishell *mini);
-void	exec_cmd(t_cmd *cmd, t_env **all_env, int *status);
+void	exec_cmd(t_cmd *cmd, t_env **all_env, int *status, t_minishell *mini);
 int		process_loop(t_cmd *tmp, int pip[2], int *prev_pip, t_minishell *mini);
 
 /*  Executor_utils  */
@@ -130,8 +138,10 @@ int		do_in_redir(t_cmd *cmd);
 int		do_out_redir(t_cmd *cmd);
 int		only_one_blt(t_minishell *mini);
 int		process_just_redir(t_cmd *all_cmd);
-int		exec_builtin(t_cmd *cmd, t_env **env);
 char	*path(t_cmd *cmd, t_env *all_env, int *status);
+int		exec_builtin(t_cmd *cmd, t_env **env, t_minishell *mini);
+void	verif_point(t_cmd *cmd, t_minishell *mini, char **cur_env);
+void	verif_dir(char *full_path, t_minishell *mini, char **cur_env);
 
 /*  Signal  */
 void	sig_dfl(void);
@@ -145,12 +155,14 @@ int		ft_pwd(void);
 int		ft_echo(t_cmd *cmd);
 int		check_var(char *var);
 int		ft_env(t_env **all_env);
+int		ft_cd(t_cmd *cmd, t_env **all_env);
 int		ft_unset(t_cmd *cmd, t_env **all_env);
+int		ft_exit(t_cmd *cmd, t_minishell *mini);
 int		ft_export(t_cmd *cmd, t_env **all_env);
 /** Export **/
-void	*print_env(t_env *all_env);
+int		print_env(t_env *all_env);
+t_env	*build_node(int i, t_cmd *cmd, int *pos_egal);
 int		process_node(t_env *tmp, t_env *new, int pos_egal);
-t_env	*build_node(int *i, t_cmd *cmd, int *pos_egal, t_env **all_env);
 
 /*  Clean  */
 void	clean_cmd(t_cmd **cmd);
@@ -160,12 +172,14 @@ void	clean_loop(char **line, t_minishell *mini);
 void	clean_shell(char **line, t_minishell *mini);
 
 /*  Error  */
-void	error_exit_msg(char *msg, int status);
+void	error_exit_msg(char *msg, int status, t_minishell *mini);
 
 /*  Utils  */
+int		is_digit(char c);
 char	*ft_itoa(int nb);
 void	free_split(char **words);
 int		ft_strlen(const char *str);
+int		ft_atoi(char *str, int *out);
 int		ft_strchr(char *str, char c);
 void	ft_putstr_fd(char *s, int fd);
 int		ft_strschr(char *str, char *chr);
@@ -175,6 +189,7 @@ void	*ft_calloc(size_t count, size_t size);
 char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strnndup(char *src, int start, int end);
 char	*ft_strlcopy(char *dst, const char *src, int size);
+int		update_path(char *prefix, char *path, t_env **all_env);
 
 /* GNL */
 char	*ft_free(char *s1);

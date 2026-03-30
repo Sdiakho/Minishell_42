@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 13:21:09 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/03 13:24:48 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 16:27:58 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int	lexer(char *line, t_tok **all_tok)
 		if (is_sym(line[i]))
 		{
 			if (!extract_sym(line, &i, new))
-				return (clean_tok(all_tok), free(new), 0);
+				return (clean_tok(all_tok), 0);
 		}
 		else
 			if (!extract_word(line, &i, new))
-				return (clean_tok(all_tok), free(new), 0);
+				return (clean_tok(all_tok), 0);
 		add_back_tok(all_tok, new);
 	}
 	return (1);

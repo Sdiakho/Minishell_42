@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:30:54 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:16:06 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/28 14:39:57 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	child_process(t_cmd *cmd, t_minishell *mini, int prev_pip, int pip[2])
 		clean_exit(mini, 1);
 	if (!do_out_redir(cmd))
 		clean_exit(mini, 1);
-	exec_cmd(cmd, &(mini->all_env), &status);
+	exec_cmd(cmd, &(mini->all_env), &status, mini);
 	clean_exit(mini, status);
 }
 

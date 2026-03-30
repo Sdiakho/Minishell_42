@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:33:54 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/22 23:22:38 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 16:45:37 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ int	do_out_redir(t_cmd *cmd)
 			else
 				fd = open(tmp->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd < 0)
+			{
+				perror(tmp->file);
 				return (0);
+			}
 			if (dup2(fd, STDOUT_FILENO) < 0)
 				return (0);
 			close(fd);
@@ -49,9 +52,15 @@ int	do_in_redir(t_cmd *cmd)
 		{
 			fd = open(tmp->file, O_RDONLY);
 			if (fd < 0)
+			{
+				perror(tmp->file);
 				return (0);
+			}
 			if (dup2(fd, STDIN_FILENO) < 0)
+			{
+				ft_putstr_fd("minishell: Dup2 error", 2);
 				return (0);
+			}
 			close(fd);
 		}
 		tmp = tmp->next;
@@ -87,7 +96,7 @@ int	only_one_blt(t_minishell *mini)
 		reset_save(save_stdin, save_stdout);
 		return (0);
 	}
-	mini->exit_status = exec_builtin(mini->all_cmd, &(mini->all_env));
+	mini->exit_status = exec_builtin(mini->all_cmd, &(mini->all_env), mini);
 	if (!reset_save(save_stdin, save_stdout))
 		return (0);
 	return (1);

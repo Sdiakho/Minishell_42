@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 15:47:12 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/02/27 09:55:22 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 16:29:34 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	extract_sym(char *str, int *i, t_tok *new)
 		return (sym_less(str, i, new));
 	else if (str[*i] == '|')
 		return (sym_pipe(str, i, new));
+	free(new);
 	return (0);
 }
 

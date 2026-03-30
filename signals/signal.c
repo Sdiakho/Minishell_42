@@ -6,13 +6,13 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 12:20:32 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/21 18:50:37 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 17:09:50 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
+extern volatile sig_atomic_t	g_status;
 
 t_sig	sig_init(void (*handler)(int))
 {

@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 13:03:17 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/22 23:24:26 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 15:10:45 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int	fill_env(char **envp, t_env **all_env)
 		sep = search_key(envp[i]);
 		if (sep == -1)
 		{
-			if (!alloc_name(&tmp, envp[i]))
+			if (!alloc_name(tmp, envp[i]))
 				return (clean_env(all_env), free(tmp), 0);
 		}
 		else
-			if (!alloc_env(&tmp, envp[i], sep))
+			if (!alloc_env(tmp, envp[i], sep))
 				return (clean_env(all_env), free(tmp), 0);
 		add_front_env(all_env, tmp);
 		i++;

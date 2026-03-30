@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 14:07:35 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/26 18:09:48 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 21:27:43 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	sort_tab(t_env **tab, int env_len)
 	}
 }
 
-void	*print_env(t_env *all_env)
+int	print_env(t_env *all_env)
 {
 	int		i;
 	int		len_env;
@@ -82,7 +82,7 @@ void	*print_env(t_env *all_env)
 	len_env = env_len(all_env);
 	tab = malloc(sizeof(t_env *) * len_env);
 	if (!tab)
-		return (NULL);
+		return (1);
 	fill_tab(tab, all_env);
 	i = 0;
 	sort_tab(tab, len_env);
@@ -95,5 +95,5 @@ void	*print_env(t_env *all_env)
 		i++;
 	}
 	free(tab);
-	return (NULL);
+	return (0);
 }

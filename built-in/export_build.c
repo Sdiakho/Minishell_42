@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 18:12:01 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/26 18:43:14 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 19:34:47 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,25 +78,16 @@ int	process_node(t_env *tmp, t_env *new, int pos_egal)
 		return (0);
 }
 
-t_env	*build_node(int *i, t_cmd *cmd, int *pos_egal, t_env **all_env)
+t_env	*build_node(int i, t_cmd *cmd, int *pos_egal)
 {
 	t_env	*new;
 
-	*pos_egal = ft_strchr(cmd->cmd_param[*i], '=');
+	*pos_egal = ft_strchr(cmd->cmd_param[i], '=');
 	if (*pos_egal == -1)
-		new = create_partial_node(cmd->cmd_param[*i]);
+		new = create_partial_node(cmd->cmd_param[i]);
 	else
-		new = create_full_node(cmd->cmd_param[*i], *pos_egal);
+		new = create_full_node(cmd->cmd_param[i], *pos_egal);
 	if (!new)
-	{
-		(*i)++;
 		return (NULL);
-	}
-	if (*all_env == NULL)
-	{
-		*all_env = new;
-		(*i)++;
-		return (NULL);
-	}
 	return (new);
 }

@@ -6,37 +6,47 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 16:43:15 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/22 23:23:06 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 21:27:23 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	wait_pipeline(t_cmd *all_cmd)
+void	loop_wait(t_cmd *all_cmd, int *final_status)
 {
 	t_cmd	*tmp;
 	int		status;
-	int		final_status;
+	int		is_printed;
 
+	is_printed = 0;
 	tmp = all_cmd;
-	final_status = 1;
 	while (tmp)
 	{
 		if (tmp->pid != -1)
 		{
 			waitpid(tmp->pid, &status, 0);
 			if (WIFEXITED(status))
-				final_status = WEXITSTATUS(status);
+				*final_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				final_status = 128 + WTERMSIG(status);
-				write(1, "\n", 1);
+				*final_status = 128 + WTERMSIG(status);
+				if (is_printed == 0)
+					write(1, "\n", 1);
+				is_printed++;
 			}
 			else
-				final_status = 1;
+				*final_status = 1;
 		}
 		tmp = tmp->next;
 	}
+}
+
+int	wait_pipeline(t_cmd *all_cmd)
+{
+	int		final_status;
+
+	final_status = 1;
+	loop_wait(all_cmd, &final_status);
 	return (final_status);
 }
 
@@ -62,7 +72,10 @@ int	process_cmd(t_minishell *mini)
 	if (is_builtin(mini->all_cmd->cmd_param[0]) && !mini->all_cmd->next)
 	{
 		if (!only_one_blt(mini))
+		{
+			mini->exit_status = 1;
 			return (0);
+		}
 		return (1);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 13:10:44 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/26 18:35:05 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 15:16:49 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	int		len_s2;
 	char	*join;
 
+	if (!s1 && !s2)
+		return (NULL);
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	join = (char *)malloc(sizeof(char) * (len_s1 + len_s2 + 1));
-	if (!join || (!s1 && !s2))
+	if (!join)
 		return (NULL);
 	if (s1)
 		ft_strlcopy(join, s1, len_s1 + 1);

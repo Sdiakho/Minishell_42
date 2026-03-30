@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 15:22:24 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/14 13:59:43 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/03/30 18:50:55 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_env_var(char *str)
 	in_double = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && in_single == 0)
+		if (str[i] == '$' && get_var_len(&str[i + 1]) > 0 && in_single == 0)
 			return (i);
 		else if (str[i] == '\'' && in_double == 0)
 			in_single = !in_single;
