@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:38:01 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/30 21:18:32 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/04/07 17:00:41 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	exec_extern(t_cmd *cmd, t_env **all_env, t_minishell *mini)
 	{
 		free_split(cur_env);
 		ft_putstr_fd(cmd->cmd_param[0], 2);
+		ft_putstr_fd("\n", 2);
 		if (status == 127)
 			error_exit_msg("minishell: command not found", status, mini);
 		else if (status == 126)

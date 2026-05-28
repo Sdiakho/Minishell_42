@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 10:42:23 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/30 18:45:14 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/05/14 16:41:59 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	expander(t_tok *all_tok, t_env *all_env, int *exit_status)
 		if (temp->type == WORD)
 		{
 			if (!process_one(temp, all_env, exit_status))
-				return (clean_env(&all_env), clean_tok(&all_tok), 0);
+				return (0);
 		}
 		temp = temp->next;
 	}

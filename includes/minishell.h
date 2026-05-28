@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:31:16 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/30 22:14:50 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/05/14 17:07:31 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,11 @@ int		process_loop(t_cmd *tmp, int pip[2], int *prev_pip, t_minishell *mini);
 /*  Executor_utils  */
 int		is_builtin(char *cmd);
 int		do_in_redir(t_cmd *cmd);
+int		open_in_file(char *file);
 int		do_out_redir(t_cmd *cmd);
 int		only_one_blt(t_minishell *mini);
 int		process_just_redir(t_cmd *all_cmd);
+int		open_out_file(char *file, t_token_type type);
 char	*path(t_cmd *cmd, t_env *all_env, int *status);
 int		exec_builtin(t_cmd *cmd, t_env **env, t_minishell *mini);
 void	verif_point(t_cmd *cmd, t_minishell *mini, char **cur_env);

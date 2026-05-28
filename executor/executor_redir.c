@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:33:54 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/30 16:45:37 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/05/14 17:10:44 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,11 @@ int	do_out_redir(t_cmd *cmd)
 	{
 		if (tmp->type == GREAT || tmp->type == D_GREAT)
 		{
-			if (tmp->type == GREAT)
-				fd = open(tmp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else
-				fd = open(tmp->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			fd = open_out_file(tmp->file, tmp->type);
 			if (fd < 0)
-			{
-				perror(tmp->file);
-				return (0);
-			}
+				return (perror(tmp->file), 0);
 			if (dup2(fd, STDOUT_FILENO) < 0)
-				return (0);
+				return (close(fd), 0);
 			close(fd);
 		}
 		tmp = tmp->next;
@@ -50,16 +44,13 @@ int	do_in_redir(t_cmd *cmd)
 	{
 		if (tmp->type == LESS || tmp->type == H_DOC)
 		{
-			fd = open(tmp->file, O_RDONLY);
+			fd = open_in_file(tmp->file);
 			if (fd < 0)
-			{
-				perror(tmp->file);
-				return (0);
-			}
+				return (perror(tmp->file), 0);
 			if (dup2(fd, STDIN_FILENO) < 0)
 			{
 				ft_putstr_fd("minishell: Dup2 error", 2);
-				return (0);
+				return (close(fd), 0);
 			}
 			close(fd);
 		}
@@ -119,6 +110,7 @@ int	process_just_redir(t_cmd *all_cmd)
 		reset_save(save_stdin, save_stdout);
 		return (0);
 	}
-	reset_save(save_stdin, save_stdout);
+	if (!reset_save(save_stdin, save_stdout))
+		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:30:54 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/28 14:39:57 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/05/14 16:47:31 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@ void	clean_exit(t_minishell *mini, int exit_code)
 	empty_ptr = NULL;
 	clean_shell(&empty_ptr, mini);
 	exit(exit_code);
+}
+
+static void	clean_pipe_fds(int pip[2], int prev_pip, int has_new_pipe)
+{
+	if (has_new_pipe)
+	{
+		close(pip[0]);
+		close(pip[1]);
+	}
+	if (prev_pip != -1)
+		close(prev_pip);
 }
 
 void	child_process(t_cmd *cmd, t_minishell *mini, int prev_pip, int pip[2])
@@ -49,14 +60,18 @@ void	child_process(t_cmd *cmd, t_minishell *mini, int prev_pip, int pip[2])
 
 int	process_loop(t_cmd *tmp, int pip[2], int *prev_pip, t_minishell *mini)
 {
+	int	has_pipe;
+
+	has_pipe = 0;
 	if (tmp->next != NULL)
 	{
 		if (pipe(pip) < 0)
-			return (0);
+			return (clean_pipe_fds(pip, *prev_pip, 0), 0);
+		has_pipe = 1;
 	}
 	tmp->pid = fork();
 	if (tmp->pid < 0)
-		return (0);
+		return (clean_pipe_fds(pip, *prev_pip, has_pipe), 0);
 	if (tmp->pid == 0)
 		child_process(tmp, mini, *prev_pip, pip);
 	if (*prev_pip != -1)

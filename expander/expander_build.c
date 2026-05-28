@@ -6,16 +6,33 @@
 /*   By: sdiakho <sdiakho@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 15:25:53 by sdiakho           #+#    #+#             */
-/*   Updated: 2026/03/10 18:50:01 by sdiakho          ###   ########.fr       */
+/*   Updated: 2026/05/28 12:12:52 by sdiakho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+static char	*create_empty_value(void)
+{
+	char	*empty;
+
+	empty = (char *)malloc(sizeof(char) * 1);
+	if (!empty)
+		return (NULL);
+	empty[0] = '\0';
+	return (empty);
+}
+
+static char	*safe_dup_value(char *value)
+{
+	if (!value)
+		return (create_empty_value());
+	return (ft_strnndup(value, 0, ft_strlen(value)));
+}
+
 char	*get_env_value(char *key, t_env *all_env)
 {
 	t_env	*tmp;
-	char	*dup_value;
 	int		key_len;
 	int		skey_len;
 
@@ -24,20 +41,13 @@ char	*get_env_value(char *key, t_env *all_env)
 	while (tmp)
 	{
 		key_len = ft_strlen(tmp->name);
-		if (skey_len == key_len && ft_strncmp(key, tmp->name, key_len) == 0)
-		{
-			dup_value = ft_strnndup(tmp->value, 0, ft_strlen(tmp->value));
-			if (!dup_value)
-				return (free(key), NULL);
-			return (free(key), dup_value);
-		}
+		if (skey_len == key_len
+			&& ft_strncmp(key, tmp->name, key_len) == 0)
+			return (free(key), safe_dup_value(tmp->value));
 		tmp = tmp->next;
 	}
-	dup_value = (char *)malloc(sizeof(char) * 1);
-	if (!dup_value)
-		return (free(key), NULL);
-	dup_value[0] = '\0';
-	return (free(key), dup_value);
+	free(key);
+	return (create_empty_value());
 }
 
 char	*create_swap(char *str, char *swap)
@@ -58,7 +68,8 @@ char	*create_swap(char *str, char *swap)
 		return (NULL);
 	ft_strlcopy(temp, str, pos_dl + 1);
 	ft_strlcopy(&temp[pos_dl], swap, ft_strlen(swap) + 1);
-	full_join = (char *)malloc((ft_strlen(temp) + len_str - pos_dl - len_var));
+	full_join = (char *)malloc((ft_strlen(temp)
+				+ len_str - pos_dl - len_var + 1));
 	if (!full_join)
 		return (free(temp), NULL);
 	ft_strlcopy(full_join, temp, ft_strlen(temp) + 1);
